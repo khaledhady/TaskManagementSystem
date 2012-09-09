@@ -11,7 +11,7 @@ When /^I press "(.*?)"$/ do |arg1|
 end
 
 Then /^I should be on my projects page$/ do
-  pending # express the regexp above with the code you wish you had
+  page.should have_content('Projects List')
 end
 
 

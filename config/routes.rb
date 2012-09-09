@@ -1,9 +1,15 @@
 TaskManagementSystem::Application.routes.draw do
+  resources :projects
+
   devise_for :users
 
   resources :users
- 
+
+  authenticated :user do
+    root :to => "projects#index"
+  end
   root :to => "pages#redirect_to_sign_in"
+ 
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
