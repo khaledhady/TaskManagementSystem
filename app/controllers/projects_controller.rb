@@ -41,11 +41,17 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    @project = Project.new
-    @project.name = params[:project][:name]
-    @project.identifier = params[:project][:identifier]
-    @project.start_date = params[:project][:start_date]
-    @project.end_date = params[:project][:end_date]
+    start_date = Date.new(params[:project]["start_date(1i)"].to_i,
+                    params[:project]["start_date(2i)"].to_i,
+                    params[:project]["start_date(3i)"].to_i)
+    end_date = Date.new(params[:project]["end_date(1i)"].to_i,
+                    params[:project]["end_date(2i)"].to_i,
+                    params[:project]["end_date(3i)"].to_i)
+    @project = Project.new(:name => params[:project][:name],
+                           :identifier => params[:project][:identifier],
+                           :start_date => start_date,
+                           :end_date => end_date)
+
     @project.parent_id = params[:project][:parent_id]
 
     @project.users << current_user

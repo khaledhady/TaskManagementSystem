@@ -12,10 +12,9 @@ Feature: Admin can create a new project
     And I press "Create Project"
     Then I should see "ProjectIdentifier"
 
-  @javascript
-  Scenario: Admin creates a sub project for a cetain project
-    Given a user exists with email: "myemail@mail.com", password: "123456", password_confirmation: "123456", role: "admin"
-    Given a project exists with identifier: "ProjectIdentifier", name: "ProjectName"
+  Scenario: Admin creates a sub project for a certain project
+    Given a user exists with email: "myemail@mail.com", password: "123456", password_confirmation: "123456", role: "admin", id: 1
+    And user "myemail@mail.com" manages "5" projects
     And I am on sign in page
     When I fill in "user_email" with "myemail@mail.com"
     And I fill in "user_password" with "123456"
