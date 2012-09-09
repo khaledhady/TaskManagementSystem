@@ -8,7 +8,49 @@
 </head>
 <body>
 
-<%= yield %>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <a class="brand" href="/">Task Management</a>
+        <div class="nav-collapse">
+          <ul class="nav">
+            <% if signed_in? %>
+              <li><%= link_to "Projects", projects_path %></li>
+              <% if can? :manage, User %>
+                <li><%= link_to "Manage Users", users_path %></li>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+      <div class="row">
+        <div class="span9 label label-info">
+          <% if signed_in? %>
+            You are signed in as <%= current_user.email%>, if not you can <%= link_to "Sign out", destroy_user_session_path, :method => :delete%>
+          <%  end %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span9">
+          <span id="notice"><%= notice %></span>
+          <span id="alert"><%= alert %></span>
+          <%= yield %>
+        </div>
+        <div class="span3">
+          <h2>About Us</h2>
+          This is the side bar, We can put anything in this bar
+        </div>
+      </div>
+  </div>
 
 </body>
 </html>

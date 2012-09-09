@@ -27,7 +27,7 @@ class UsersController < ApplicationController
     @user = User.new
 
     respond_to do |format|
-      format.html # new.html.erb
+      format.html { render :template => 'devise/registrations/new'}
       format.json { render json: @user }
     end
   end
