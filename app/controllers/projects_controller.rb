@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    @projects = Project.all
+    @projects = current_user.projects
 
     respond_to do |format|
       format.html # index.html.erb
@@ -25,6 +25,7 @@ class ProjectsController < ApplicationController
   # GET /projects/new.json
   def new
     @project = Project.new
+    @project.parent_id = params[:parent_id]
 
     respond_to do |format|
       format.html # new.html.erb
@@ -40,8 +41,14 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    @project = Project.new(params[:project])
+    @project = Project.new
+    @project.name = params[:project][:name]
+    @project.identifier = params[:project][:identifier]
+    @project.start_date = params[:project][:start_date]
+    @project.end_date = params[:project][:end_date]
+    @project.parent_id = params[:project][:parent_id]
 
+    @project.users << current_user
     respond_to do |format|
       if @project.save
         format.html { redirect_to @project, notice: 'Project was successfully created.' }

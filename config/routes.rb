@@ -1,9 +1,17 @@
 TaskManagementSystem::Application.routes.draw do
   resources :projects
 
-  devise_for :users, :controllers => { :registrations => "registrations" }
+  devise_for :users
 
   resources :users
+
+  # devise_for :users do
+  #   post "/users" => "registrations#new"
+  # end
+
+  # resources :users, :except => [:create]
+
+  
 
   authenticated :user do
     root :to => "projects#index"

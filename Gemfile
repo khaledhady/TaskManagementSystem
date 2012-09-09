@@ -24,6 +24,7 @@ gem 'jquery-rails'
 gem 'devise'
 gem 'mysql2'
 gem 'paperclip'
+gem 'ancestry'
 group :test, :development do
   gem 'cucumber-rails'
   gem 'database_cleaner'

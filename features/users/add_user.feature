@@ -14,4 +14,4 @@ Feature: Admin can add a user to the system
     And I fill in "user_role" with "member"
     And I fill in "user_name" with "NewMember"
     And I press "Save User"
-    # Then I should be on my projects page
+    Then I should see "NewMember"
