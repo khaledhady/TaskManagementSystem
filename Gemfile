@@ -36,6 +36,7 @@ group :test, :development do
   gem 'guard-cucumber'
   gem 'cancan'
   gem 'rolify'
+  gem 'pickle'
 end
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
