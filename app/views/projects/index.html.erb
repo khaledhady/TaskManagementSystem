@@ -30,16 +30,18 @@
             <td><%= project.end_date %></td>
             <td><%=l project.created_at %></td>
             <td>
-              <%= link_to t('.show', :default => t("helpers.links.show")),
-                          project_path(project.identifier), :class => 'btn btn-mini' %>
-              <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                          edit_project_path(project), :class => 'btn btn-mini' %>
-              <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                          project_path(project),
-                          :method => :delete,
-                          :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                          :class => 'btn btn-mini btn-danger' %>
-            </td>
+                <%= link_to t('.show', :default => t("helpers.links.show")),
+                            project_path(project.identifier), :class => 'btn btn-mini' %>
+            <% if can? :manage, project %>
+                <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                            edit_project_path(project), :class => 'btn btn-mini' %>
+                <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                            project_path(project),
+                            :method => :delete,
+                            :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                            :class => 'btn btn-mini btn-danger' %>
+              </td>
+            <% end %>
           </tr>
         <% end %>
       <% end %>

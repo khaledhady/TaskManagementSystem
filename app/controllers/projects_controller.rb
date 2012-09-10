@@ -24,6 +24,7 @@ class ProjectsController < ApplicationController
       rescue
         @project = Project.find_by_identifier(id)  
     end
+    @users = @project.users
 
     respond_to do |format|
       format.html # show.html.erb
@@ -116,6 +117,30 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to projects_url }
       format.json { head :no_content }
+    end
+  end
+
+
+  def add_member
+    new_member = User.find_by_email(params[:user_email])
+    @project = Project.find(params[:id])
+    @project.users << new_member
+    if @project.save
+      redirect_to project_path(@project), :notice => "User was added to project"
+    else
+      redirect_to project_path(@project), :alert => "User couldn't be added to project"
+    end
+
+  end
+
+  def remove_member
+    removed_member = User.find(params[:user_id])
+    @project = Project.find(params[:id])
+    @project.users.delete removed_member
+    if @project.save
+      redirect_to project_path(@project), :notice => "User was removed from project"
+    else
+      redirect_to project_path(@project), :alert => "User couldn't be removed from project"
     end
   end
 end

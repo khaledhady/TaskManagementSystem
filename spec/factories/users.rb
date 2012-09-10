@@ -6,6 +6,6 @@ FactoryGirl.define do
     role "MyRole"
     sequence(:email) { |n| "foo#{n}@example.com" } 
     password 'MyPass'
-    password_confirmation 'MyPassConfirm'
+    password_confirmation 'MyPass'
   end
 end

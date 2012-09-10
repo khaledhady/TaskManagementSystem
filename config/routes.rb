@@ -1,5 +1,12 @@
 TaskManagementSystem::Application.routes.draw do
-  resources :projects, :except => :show
+  resources :project_user_records
+  resources :projects, :except => :show do
+    member do 
+      delete "/members/remove/" => "projects#remove_member", :as => :remove_member
+      post "/members/add/" => "projects#add_member", :as => :add_member
+    end
+    
+  end
   get '/projects/:identifier' => "projects#show", :as => :show_project
 
   devise_for :users 
