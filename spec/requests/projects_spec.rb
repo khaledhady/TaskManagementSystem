@@ -89,14 +89,23 @@ describe "Projects" do
 
     it "should view only my projects with show, edit and destroy options" do
       sign_in_as :admin
+
+      # admin has no projects
       page.should have_content 'You have no projects'
+
+      # create 3 projects for member and another 5 in the system
       3.times{@user.projects << FactoryGirl.create(:project)}
       5.times{FactoryGirl.create(:project)}
       @user.save
+
       visit projects_path
+
+      # make sure that all the projects of member are on the page
       @user.projects.each do |project|
         page.should have_content project.name
       end
+
+      # As admin I should see all actions
       page.should have_content 'Show'
       page.should have_content 'Edit'
       page.should have_content 'Destroy'
@@ -104,19 +113,86 @@ describe "Projects" do
 
     it "should view only my projects with only show option" do
       sign_in_as :member
+
+      # member has no projects
       page.should have_content 'You have no projects'
+
+      # create 3 projects for member and another 5 in the system
       3.times{@user.projects << FactoryGirl.create(:project)}
       5.times{FactoryGirl.create(:project)}
       @user.save
+
       visit projects_path
+
+      # make sure that all the projects of member are on the page
       @user.projects.each do |project|
         page.should have_content project.name
       end
+
+      # make sure normal member can't see edit or destroy
       page.should have_content 'Show'
       page.should_not have_content 'Edit'
       page.should_not have_content 'Destroy'
     end
 
+  end
+
+  describe "POST /projects/:id/members/add/:user_id" do
+
+    it "should add a member to a certain project" do
+      project = FactoryGirl.create(:project)
+      member = FactoryGirl.create(:user, :role => :member)
+      sign_in_as :admin
+      @user.projects << project
+      @user.save
+      visit projects_path
+      click_link 'Show' 
+      page.should have_content project.name
+      click_link 'Manage Members'
+      page.should have_content @user.name
+
+      # add member to the project
+      fill_in "user_email", :with => member.email
+      click_button "Add to project"
+      page.should have_content 'User was added to project'
+
+      #check that member was added
+      click_link 'Manage Members'   
+      page.should have_content @user.name
+      page.should have_content member.name
+      project.users.include?(member).should eq true
+    end
+  end
+
+  describe "POST /projects/:id/members/add/:user_id" do
+
+    it "should remove a member from a certain project" do
+      project = FactoryGirl.create(:project)
+      member = FactoryGirl.create(:user, :role => :member)
+
+      sign_in_as :admin
+      @user.projects << project
+      @user.save
+      member.projects << project
+      member.save
+
+      visit projects_path
+      click_link 'Show' 
+      page.should have_content project.name
+      click_link 'Manage Members'
+      page.should have_content @user.name
+      page.should have_content member.name
+
+      # remove the member from the project
+      remove_member_link = page.all("a", :text => 'Destroy').last
+      remove_member_link.click
+
+      #check that member was removed
+      click_link 'Manage Members'   
+      page.should have_content @user.name
+      page.should_not have_content member.name
+      project.users.include?(member).should eq false
+    end
   end
 
 
