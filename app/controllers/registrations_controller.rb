@@ -7,7 +7,7 @@ class RegistrationsController < Devise::RegistrationsController
     users_path
   end
 
-  def new
-    super
-  end
+  # def new
+  #   super
+  # end
 end

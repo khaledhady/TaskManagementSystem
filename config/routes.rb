@@ -9,13 +9,16 @@ TaskManagementSystem::Application.routes.draw do
   end
   get '/projects/:identifier' => "projects#show", :as => :show_project
 
-  devise_for :users 
 
-  resources :users
+  # devise_for :users 
 
-  # devise_for :users do
-  #   post "/users" => "registrations#new"
-  # end
+  devise_for :users do
+    post "/users" => "registrations#create"
+  end
+
+  resources :users, :only => [:index, :new, :edit, :destroy]
+
+  
 
   # resources :users, :except => [:create]
 
