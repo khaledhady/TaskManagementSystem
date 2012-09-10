@@ -1,13 +1,13 @@
 Feature: User views his / her projects
 
   Scenario: Admin sees a list of only the projects he is admin of
-    Given a user exists with email: "myemail@mail.com", password: "123456", password_confirmation: "123456", role: "admin"
+    Given a user exists with email: "myemail@mail.com", password: "123456", password_confirmation: "123456", role: "admin", id: 1
     And Given the following projects exist
       | name       | identifier |
       | MyProject1 | project1   |
       | MyProject2 | project2   |
       | MyProject3 | project3   |
-    When I go to path "/products"
+    And Given the following projects exist
     Then I should see products table
       | Milk   | $2.99 |
       | Puzzle | $8.99 |

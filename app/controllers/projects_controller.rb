@@ -1,8 +1,13 @@
 class ProjectsController < ApplicationController
+
+  before_filter :authenticate_user!
+  load_and_authorize_resource
+
   # GET /projects
   # GET /projects.json
   def index
-    @projects = current_user.projects
+    # show only projects I am member of and get only root projects (have no parents)
+    @projects = current_user.projects.where(:ancestry => nil)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -41,6 +46,7 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
+    
     start_date = Date.new(params[:project]["start_date(1i)"].to_i,
                     params[:project]["start_date(2i)"].to_i,
                     params[:project]["start_date(3i)"].to_i)
@@ -72,7 +78,18 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
 
     respond_to do |format|
-      if @project.update_attributes(params[:project])
+      start_date = Date.new(params[:project]["start_date(1i)"].to_i,
+                    params[:project]["start_date(2i)"].to_i,
+                    params[:project]["start_date(3i)"].to_i)
+      end_date = Date.new(params[:project]["end_date(1i)"].to_i,
+                      params[:project]["end_date(2i)"].to_i,
+                      params[:project]["end_date(3i)"].to_i)
+      @project.name = params[:project][:name]
+      @project.identifier = params[:project][:identifier]
+      @project.start_date = start_date
+      @project.end_date = end_date
+
+      if @project.save
         format.html { redirect_to @project, notice: 'Project was successfully updated.' }
         format.json { head :no_content }
       else
