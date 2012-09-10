@@ -1,7 +1,8 @@
 TaskManagementSystem::Application.routes.draw do
-  resources :projects
+  resources :projects, :except => :show
+  get '/projects/:identifier' => "projects#show", :as => :show_project
 
-  devise_for :users
+  devise_for :users 
 
   resources :users
 

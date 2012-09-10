@@ -18,7 +18,12 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    @project = Project.find(params[:id])
+    id = params[:identifier]
+    begin
+        @project = Project.find(id)
+      rescue
+        @project = Project.find_by_identifier(id)  
+    end
 
     respond_to do |format|
       format.html # show.html.erb

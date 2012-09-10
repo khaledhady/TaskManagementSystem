@@ -6,8 +6,10 @@ class Project < ActiveRecord::Base
 
   validates :name, :identifier, :start_date, :end_date, :presence => true
   validates :identifier,
-            :uniqueness => true,
-            :format => {:with => /^[a-zA-Z\d\s]*$/}
+            :uniqueness => true
+  validates :identifier,
+            :format => {:with => /^[a-zA-Z\d-]*$/,
+            :message => "Identifier must be one word with no spaces"}            
 
   validate :can_create_as_sub
 
