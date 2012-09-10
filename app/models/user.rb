@@ -15,4 +15,8 @@ class User < ActiveRecord::Base
   def role? role
     self.role.to_sym == role 
   end
+
+  def can_create_sub_project_for parent_project
+    self.role? :admin and self.projects.include? parent_project
+  end
 end

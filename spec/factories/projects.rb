@@ -2,8 +2,8 @@
 
 FactoryGirl.define do
   factory :project do
-    name "MyString"
-    identifier "MyString"
+    sequence(:name) { |n| "MyString#{n}" }
+    sequence(:identifier) {|n| "MyIdentifier#{n}"}
     start_date "2012-09-09"
     end_date "2012-09-09"
   end

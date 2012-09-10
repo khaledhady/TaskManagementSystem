@@ -5,10 +5,14 @@ class Ability
     user ||= User.new # guest user (not logged in)
 
     if user.role? :admin
-        can :manage, :all
+        can :manage, Project do |project|
+          user.projects.include? project
+        end
+        can :create, Project
+        can :manage, User
     else
         can :read, Project do |project|
-            user.tasks.include? project
+          user.projects.include? project
         end
     end
 

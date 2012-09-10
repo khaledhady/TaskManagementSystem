@@ -1,9 +1,22 @@
 class Project < ActiveRecord::Base
-  attr_accessible :end_date, :identifier, :name, :start_date, :ancestry
+  attr_accessible :end_date, :identifier, :name, :start_date, :ancestry, :parent_id
   has_many :project_user_records, :dependent => :destroy
   has_many :users, :through => :project_user_records
   has_ancestry
-  # after_save :addToProjectUsers
+
+  validates :name, :identifier, :start_date, :end_date, :presence => true
+  validates :identifier,
+            :uniqueness => true,
+            :format => {:with => /^[a-zA-Z\d\s]*$/}
+
+  validate :can_create_as_sub
+
+  # we have only one level sub project
+  def can_create_as_sub
+    if self.parent and not self.parent.is_root?
+      errors.add_to_base("You can create only one level sub project" )
+    end
+  end
 
   def admin
     Project.users.find_by_role(:admin)

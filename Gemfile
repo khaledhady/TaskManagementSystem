@@ -26,6 +26,7 @@ gem 'mysql2'
 gem 'paperclip'
 gem 'ancestry'
 group :test, :development do
+  gem 'ruby-debug19'
   gem 'cucumber-rails'
   gem 'database_cleaner'
   gem "rspec-rails"

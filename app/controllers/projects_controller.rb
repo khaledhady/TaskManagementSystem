@@ -58,7 +58,10 @@ class ProjectsController < ApplicationController
                            :start_date => start_date,
                            :end_date => end_date)
 
-    @project.parent_id = params[:project][:parent_id]
+    # if we are creating a sub project
+    if params[:project][:parent_id]
+      @project.parent = Project.find(params[:project][:parent_id])
+    end
 
     @project.users << current_user
     respond_to do |format|
