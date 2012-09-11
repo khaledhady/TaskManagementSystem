@@ -14,9 +14,10 @@ TaskManagementSystem::Application.routes.draw do
 
   devise_for :users do
     post "/users" => "registrations#create"
+    get "/users/new" => "registrations#new"
   end
 
-  resources :users, :only => [:index, :new, :edit, :destroy]
+  resources :users, :only => [:index, :update, :edit, :destroy]
 
   
 

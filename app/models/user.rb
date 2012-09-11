@@ -12,6 +12,9 @@ class User < ActiveRecord::Base
   has_many :project_user_records, :dependent => :destroy
   has_many :projects, :through => :project_user_records
 
+  validates :name, :presence => true
+  validates :role, :presence => true
+
   def role? role
     self.role.to_sym == role 
   end
