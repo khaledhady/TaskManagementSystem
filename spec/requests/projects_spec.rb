@@ -95,9 +95,16 @@ describe "Projects" do
       subproject.parent = @project
       subproject.save
 
-      another_subproject = FactoryGirl.create(:project)
-      another_subproject.parent = subproject
-      another_subproject.save.should eq false
+      visit project_path @project
+      click_link "Sub Projects"
+      click_link 'Create Sub Project'
+      fill_in "project_name", :with => "SubProjectName"
+      fill_in "project_identifier", :with => "SubProjectIdentifier"
+      find(:xpath, "//input[@id='project_parent_id']").set subproject.id
+      click_button 'Create Project'
+
+      page.should have_content 'You can create only one level sub project'
+      Project.count.should eq 2
     end
 
     it "fail to create sub project for project that's not mine" do
