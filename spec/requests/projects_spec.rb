@@ -97,10 +97,7 @@ describe "Projects" do
 
       another_subproject = FactoryGirl.create(:project)
       another_subproject.parent = subproject
-      another_subproject.save
-
-      Project.count.should eq 2
-
+      another_subproject.save.should eq false
     end
 
     it "fail to create sub project for project that's not mine" do
