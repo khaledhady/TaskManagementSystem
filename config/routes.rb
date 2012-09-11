@@ -1,4 +1,6 @@
 TaskManagementSystem::Application.routes.draw do
+  resources :releases
+
   resources :project_user_records
   resources :projects, :except => :show do
     member do 

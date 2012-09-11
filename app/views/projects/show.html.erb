@@ -1,35 +1,12 @@
 <%- model_class = Project -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human %></h1>
-</div>
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
-  <dd><%= @project.name %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:identifier) %>:</strong></dt>
-  <dd><%= @project.identifier %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:start_date) %>:</strong></dt>
-  <dd><%= @project.start_date %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:end_date) %>:</strong></dt>
-  <dd><%= @project.end_date %></dd>
-</dl>
 
-<div class="form-actions">
-  <%= link_to t('.back', :default => t("helpers.links.back")),
-              projects_path, :class => 'btn'  %>
-  <% if can? :manage, @project %>
-    <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                edit_project_path(@project), :class => 'btn' %>
-    <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                project_path(@project),
-                :method => 'delete',
-                :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-                :class => 'btn btn-danger' %>
-  <% end %>
-</div>
 
 <div class="tabbable"> <!-- Only required for left/right tabs -->
   <ul class="nav nav-tabs">
-    <li class="active"><a href="#sub-projects" data-toggle="tab">Sub Projects</a></li>
+    <li class="active">
+      <a href="#project" data-toggle="tab">Project</a>
+    </li>
+    <li><a href="#Releases" data-toggle="tab">Sub Projects</a></li>
     <li><a href="#Releases" data-toggle="tab">Releases</a></li>
     <li><a href="#Tasks" data-toggle="tab">Tasks</a></li>
     <% if can? :manage, User %>
@@ -37,7 +14,35 @@
     <% end %> 
   </ul>
   <div class="tab-content">
-    <div class="tab-pane active" id="sub-projects">
+
+    <div class="tab-pane active" id="project">
+      <dl class="dl-horizontal">
+        <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
+        <dd><%= @project.name %></dd>
+        <dt><strong><%= model_class.human_attribute_name(:identifier) %>:</strong></dt>
+        <dd><%= @project.identifier %></dd>
+        <dt><strong><%= model_class.human_attribute_name(:start_date) %>:</strong></dt>
+        <dd><%= @project.start_date %></dd>
+        <dt><strong><%= model_class.human_attribute_name(:end_date) %>:</strong></dt>
+        <dd><%= @project.end_date %></dd>
+      </dl>
+
+      <div class="form-actions">
+        <%= link_to t('.back', :default => t("helpers.links.back")),
+                    projects_path, :class => 'btn'  %>
+        <% if can? :manage, @project %>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_project_path(@project), :class => 'btn' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      project_path(@project),
+                      :method => 'delete',
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-danger' %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="tab-pane" id="sub-projects">
       <% if @project.has_children? %>
         <table class="table table-striped">
           <thead>
@@ -87,7 +92,10 @@
 
     </div>
     <div class="tab-pane" id="Releases">
-      <p>Releases</p>
+      <%= render :template => 'releases/index'%>
+      <% if can? :manage, @project %> 
+        <%= link_to 'Create Release', new_release_path(:project_id => @project), :class => 'btn btn-primary' %>
+      <% end %>
     </div>
     <div class="tab-pane" id="Tasks">
       <p>Tasks</p>

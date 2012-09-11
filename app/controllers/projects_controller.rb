@@ -25,6 +25,7 @@ class ProjectsController < ApplicationController
         @project = Project.find_by_identifier(id)  
     end
     @users = @project.users
+    @releases = @project.releases
 
     respond_to do |format|
       format.html # show.html.erb
