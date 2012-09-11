@@ -16,7 +16,7 @@ class Project < ActiveRecord::Base
   # we have only one level sub project
   def can_create_as_sub
     if self.parent and not self.parent.is_root?
-      errors.add_to_base("You can create only one level sub project" )
+      errors[:base] << "You can create only one level sub project" 
     end
   end
 
